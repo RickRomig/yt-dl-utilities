@@ -38,7 +38,7 @@ Feel free to contact me with comments and suggestions for FnLoC. Also feel free 
 * Email: <rick.romig@gmail.com> or <rb_romig@twc.com>
 
 Richard Romig
-25 April 2019
+09 October 2019
 
 ### DISCLAIMER
 
