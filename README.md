@@ -1,5 +1,5 @@
 # yt-dl-utilities
-Utilities to install, remove, and update youtube-ld on Debian/Ubuntu
+Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 
 ### yt-dl-install
 1. Installs the newest available version of youtube-dl from the [youtube-dl project](https://ytdl-org.github.io/youtube-dl/index.html), using the instructions given on the youtube-dl download page.
