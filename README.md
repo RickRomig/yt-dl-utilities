@@ -1,7 +1,9 @@
 # yt-dl-utilities
+
 Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 
 ### yt-dl-install
+
 1. Installs the newest available version of youtube-dl from the [youtube-dl project](https://ytdl-org.github.io/youtube-dl/index.html), using the instructions given on the youtube-dl download page.
 2. Although youtube-dl is included in the Debian and Ubuntu repositories, it is often well out of date and infrequently updated. The apt package manager usually installs youtube-dl in `/usr/bin/` while the project's download instructions suggest installing it in `/usr/local/bin/`.
 3. If the script finds that youtube-dl has been installed by the package manager, it removes the package using `apt purge`. Then it checks to see if youtube-dl is installed (presumably from the youtube-dl project). If installed, the script displays the version number and attempts to update it. Otherwise, the newest version of youtube-dl is installed from yt-dl.org.
@@ -10,35 +12,40 @@ Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 6. Entering `yt-dl-install -i` or `yt-dl-install --info` in the terminal displays information about the script.
 
 ### yt-dl-remove
+
 1. Completely removes youtube-dl from the system whether it is the distribution repository version or the version downloaded from <https://yt-dl.org>. If both are installed, both will be removed.
 2. If the `~/.config/youtube-dl/conf` or `/etc/youtube-dl.conf` configuration files exist, they will be removed. Be sure to make backup copies if you think you might need them.
 3. If `z-ytdlupdate` exists in `/etc/cron.daily`, `/etc/cron.weekly`, or `/etc/cron.monthly` directories, it will be removed.
-3. If the log file created by the automatic updates (`/var/log/ytdsup.log`) exists, it too will be removed.
-4.  Entering `yt-dl-remove -i` or `yt-dl-remove --info` in the terminal displays information about the script.
+4. If the log file created by the automatic updates (`/var/log/ytdsup.log`) exists, it too will be removed.
+5. Entering `yt-dl-remove -i` or `yt-dl-remove --info` in the terminal displays information about the script.
 
 ### yt-dl-update
+
 1. Once youtube-dl has been installed by yt-dl-install, setting up yt-dl-update as a cron or anacron job can help keep youtube-dl up to date. You can set up a cron job using crontab. Alternatively, you can, as root (sudo) copy the script to `/etc/cron.daily`, `/etc/cron.weekly` or `/etc/cron.monthly` to be run by anacron.
-```
-sudo cp /path/to/yt-dl-update /etc/cron.daily
-```
+   
+   ```
+   sudo cp /path/to/yt-dl-update /etc/cron.daily
+   ```
+
 2. This script will update youtube-dl without leaving a log file.
 
 ### z-ytdlupdate
+
 1. This youtube-dl update script is specifically written to be run as an anacron or cron job. If the script is in `~/bin` when yt-dl-install is run, it will be copied to `/etc/cron.daily` to be run as an anacron script.
 2. To change the frequncy of the update, move the script to `/etc/cron.weekly` or `/etc/cron.monthly`
-3. This script creates a log file in `/var/log` which is limited to up to 25 entries, depending on how often youtube-dl is updated.
+3. This script creates a log file in `/var/log` which is limited to up to 25 entries with only the most recent 25 entries are kept.
 
 ### Feedback:
 
-Feel free to contact me with comments and suggestions for FnLoC. Also feel free to share any code or ideas that will help me improve this program. I can be reached through my blog, Twitter, and email.
+Feel free to contact me with comments and suggestions for these Youtube-dl. Also feel free to share any code or ideas that will help me improve these scripts. I can be reached through my blog, Twitter, and email.
 
 * [GitHub](https://github.com/RickRomig/yt-dl-utilities.git)
 * [Rick's Tech Stuff](https://ricktech.wordpress.com)
 * [Twitter (@ludditegeek)](https://twitter.com/ludditegeek)
-* Email: <rick.romig@gmail.com> or <rb_romig@twc.com>
+* Email: [rick.romig@gmail.com]() or [rb_romig@twc.com]()
 
 Richard Romig
-09 October 2019
+17 June 2020
 
 ### DISCLAIMER
 
