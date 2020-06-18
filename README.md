@@ -33,7 +33,7 @@ Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 
 1. This youtube-dl update script is specifically written to be run as an anacron or cron job. If the script is in `~/bin` when yt-dl-install is run, it will be copied to `/etc/cron.daily` to be run as an anacron script.
 2. To change the frequncy of the update, move the script to `/etc/cron.weekly` or `/etc/cron.monthly`
-3. This script creates a log file in `/var/log` which is limited to up to 25 entries with only the most recent 25 entries are kept.
+3. This script creates a log file in `/var/log` which is limited to up to 30 lines.  When the limit is exceeded, the first line of the file is removed.
 
 ### Feedback:
 
