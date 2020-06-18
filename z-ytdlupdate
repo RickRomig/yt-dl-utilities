@@ -33,4 +33,7 @@ echo "$(date) $(youtube-dl -U)" >> /var/log/ytdlup.log
 
 LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
 (( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
+LINE1=$(sed -n '1p' /var/log/ytdlup.log | grep 'Updated')
+[ -n "$LINE1" ] &&  sed -i '1d' /var/log/ytdlup.log
+
 exit
