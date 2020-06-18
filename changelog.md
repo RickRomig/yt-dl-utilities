@@ -2,6 +2,22 @@
 
 Richard B. Romig, Email: [rick.romig@gmail.com]()
 
+### 18 June 2020
+
+**z-ytldupdate**
+
+- Replaced the if statement with a single line command to remove earlier entries from the log file if the number of lines exceeded 30 lines, since only the first line was actually being removed from the file.
+  
+  ```bash
+  # Old code
+  if (( LINES > 30 )); then
+    tail -n 30 /var/log/ytdlup.log > /var/log/ytdlup.tmp
+    mv /var/log/ytdlup.tmp /var/log/ytdlup.log
+  fi
+  # New code
+  (( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
+  ```
+
 #### 09 October 2019
 
 1. Created a new repository and copied the scripts from the Bashscripts repositiory.
