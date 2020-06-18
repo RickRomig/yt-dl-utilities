@@ -6,16 +6,20 @@ Richard B. Romig, Email: [rick.romig@gmail.com]()
 
 **z-ytldupdate**
 
-- Replaced the if statement with a single line command to remove earlier entries from the log file if the number of lines exceeded 30 lines, since only the first line was actually being removed from the file.
+- Replaced the if statement with single line commands to remove earlier entries from the log file if the number of lines exceeded 30 lines, since only the first line was actually being removed from the file.  If, after running the update, the first line indicates that youtube-dl was upated, the next line will also be deleted as it ss part of that entry.
   
   ```bash
   # Old code
+  LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
   if (( LINES > 30 )); then
     tail -n 30 /var/log/ytdlup.log > /var/log/ytdlup.tmp
     mv /var/log/ytdlup.tmp /var/log/ytdlup.log
   fi
   # New code
+  LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
   (( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
+  LINE1=$(sed -n '1p' /var/log/ytdlup.log | grep 'Updated')
+  [ -n "$LINE1" ] &&  sed -i '1d' /var/log/ytdlup.log
   ```
 
 #### 09 October 2019
