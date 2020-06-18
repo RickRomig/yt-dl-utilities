@@ -1,13 +1,13 @@
 #!/bin/bash
 ###############################################################################
 # Script Name  : z-ytdlupdate
-# Description  : Updates youtube-dl automatically usng anacron
+# Description  : Updates youtube-dl automatically using anacron
 # Dependencies : anacron
 # Arguments    : None
 # Author       : Richard B. Romig, 18 July 2019
 # Email        : rick.romig@gmail.com
 # Comments     : /etc/cron.daily /etc/cron.weekly /etc/cron.monthly
-# Last updated : 20 Sep 2019
+# Last updated : 18 Jun 2020
 ###############################################################################
 # GPL v2
 # Copyright (C) 2019, Richard B. Romig
@@ -32,10 +32,5 @@ set -e
 echo "$(date) $(youtube-dl -U)" >> /var/log/ytdlup.log
 
 LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
-if (( LINES > 30 )); then
-  tail -n 30 /var/log/ytdlup.log > /var/log/ytdlup.tmp
-  mv /var/log/ytdlup.tmp /var/log/ytdlup.log
-fi
-
+(( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
 exit
-
