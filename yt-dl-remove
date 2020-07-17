@@ -28,14 +28,14 @@
 ################################################################################
 
 readonly SCRIPT=$(basename "$0")
-readonly VERSION="1.2.0"
-readonly UPDATED="20 Sep 2019"
+readonly VERSION="1.2.1"
+readonly UPDATED="17 Jul 2020"
 
 readonly HOMEDIR=$HOME
 
 show_info()
 {
-   cat << _EOF_
+  cat << _EOF_
 $SCRIPT completely removes Youtube-dl, both the version installed from your
 distribution repositories and the version downloaded from https:yt-dl.org. In
 the latter case, the script will also remove the ~/.config/youtube-dl/conf and
@@ -45,17 +45,11 @@ and its log file from /var/log.
 _EOF_
 }
 
-exists()
-{
-  command -v "$1" >/dev/null 2>&1
-}
-
 rm_repo()
 {
   # Remove version from distribution repositories, if installed
-  if dpkg -l | grep -qw youtube-dl
-  then
-    echo "Removing youtube-dl $(youtube-dl --version) installed from the repositories..."
+  if dpkg -l | grep -qw youtube-dl; then
+    echo "Removing the repository version of youtube-dl ..."
     sudo apt purge -yyq youtube-dl
    else
     echo "Repository version of youtube-dl not installed."
@@ -65,9 +59,8 @@ rm_repo()
 rm_ytdl()
 {
   # Remove yt-dl.org version, if installed
-  if exists youtube-dl
-  then
-    echo "Removing youtube-dl $(youtube-dl --version) installed from https://yt-dl.org..."
+  if [ -f "/usr/local/bin/youtube-dl" ]; then
+    echo "Removing ytdl.org version of youtube-dl..."
     sudo rm  /usr/local/bin/youtube-dl
   else
     echo "ytdl.org version of youtube-dl not installed."
@@ -80,13 +73,18 @@ rm_cfg()
   if [ -f "$HOMEDIR/.config/youtube-dl/conf" ]; then
     echo "Removing user youtube-dl configuration file..."
     rm -rf "$HOMEDIR/.config/youtube.dl/"
+    echo "User's youtube-dl configuration file removed."
+  else
+    echo "No user youtube-dl configuration file found."
   fi
 
   if [ -f "/etc/youtube-dl.conf" ]; then
     echo "Removing global youtube-dl configuration file..."
     sudo rm "/etc/youtube-dl.conf"
+    echo "Global youtube-dl configuration file removed."
+  else
+    echo "No global youtube-dl configuration file found."
   fi
-  echo "youtube-dl configuration files removed."
 }
 
 rm_updater()
@@ -138,8 +136,7 @@ case $CHOICE in
     rm_updater
     rm_logs
     ;;
-  *)  echo "Nothing to do. Exiting the script." ;;
+  *)  echo "youtube-dl not removed. Exiting the script." ;;
 esac
 
 exit
-
