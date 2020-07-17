@@ -10,13 +10,14 @@ Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 4. Once youtube-dl is installed, you can update it from a terminal with the command `sudo youtube-dl -U` since the yt-dl.org version should be the only version installed. Alternatively, the script can be used to update it.
 5. During the yt-dl.org instillation of youtube-dl, the script copies a small script (if it exists in your ~/bin directory) to automatically update youtube-dl on a daily basis using anacron. The z-ytdlupdate script is set up to write the date and the output of the `youtube-dl -U` command to a log file in `/var/log`. The size is limited to the last 25 update attempts.
 6. Entering `yt-dl-install -i` or `yt-dl-install --info` in the terminal displays information about the script.
+7. The yt-dl.org version of youtube-dl currently does not work with distributions based on Ubuntu 20.04 LTS (focal fossa) because support for Python 2 has been removed.
 
 ### yt-dl-remove
 
 1. Completely removes youtube-dl from the system whether it is the distribution repository version or the version downloaded from <https://yt-dl.org>. If both are installed, both will be removed.
 2. If the `~/.config/youtube-dl/conf` or `/etc/youtube-dl.conf` configuration files exist, they will be removed. Be sure to make backup copies if you think you might need them.
 3. If `z-ytdlupdate` exists in `/etc/cron.daily`, `/etc/cron.weekly`, or `/etc/cron.monthly` directories, it will be removed.
-4. If the log file created by the automatic updates (`/var/log/ytdsup.log`) exists, it too will be removed.
+4. If the log file created by the automatic updates (`/var/log/ytdsup.log`) exists, it too, will be removed.
 5. Entering `yt-dl-remove -i` or `yt-dl-remove --info` in the terminal displays information about the script.
 
 ### yt-dl-update
@@ -33,7 +34,7 @@ Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 
 1. This youtube-dl update script is specifically written to be run as an anacron or cron job. If the script is in `~/bin` when yt-dl-install is run, it will be copied to `/etc/cron.daily` to be run as an anacron script.
 2. To change the frequncy of the update, move the script to `/etc/cron.weekly` or `/etc/cron.monthly`.  Alternatively, the script can be run as a normal cron job.
-3. This script creates a log file (`/var/log/ytdlup` ) which has a limit of 30 lines.  When the limit is exceeded, the first line of the file is removed. If the new top entry indicates that youtube-dl was updated, then both lines of that entry will be removed.
+3. This script creates a log file (`/var/log/ytdlup` ) which has a limit of 30 entries.  When the limit is exceeded, the first line of the file is removed. If the new top entry indicates that youtube-dl was updated, then both lines of that entry will be removed.
 
 ### Feedback:
 
@@ -45,7 +46,7 @@ Feel free to contact me with comments and suggestions for these Youtube-dl. Also
 * Email: [rick.romig@gmail.com]() or [rb_romig@twc.com]()
 
 Richard Romig
-17 June 2020
+17 July 2020
 
 ### DISCLAIMER
 
