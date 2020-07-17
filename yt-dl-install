@@ -6,7 +6,9 @@
 # Arguments    : -i or --info to dispaly information about the script.
 # Author       : Richard B. Romig, 23 May 2019
 # Email        : rick.romig@gmail.com
-# Comment      : Removes package manager installed version from /usr/bin/
+# Comments     : Removes package manager installed version from /usr/bin/
+# yt-dl.org version will not install properly in distributions based on
+# Ubuntu 20.04 because python2 is not included in the distribution.
 ################################################################################
 # GPL v2
 # Copyright (C) 2019, Richard B. Romig
@@ -27,10 +29,12 @@
 ################################################################################
 
 readonly SCRIPT=$(basename "$0")
-readonly VERSION="1.2.0"
-readonly UPDATED="20 Sep 2019"
+readonly VERSION="1.2.1"
+readonly UPDATED="17 Jul 2020"
 
 BINDIR=$HOME"/bin"
+
+## Functions ##
 
 show_info()
 {
@@ -42,7 +46,7 @@ youtube-dl GitHub site at https://ytdl-org.github.io/youtube-dl/index.html.
 Portions of this script are based upon the download instructions on the project's
 download page.
 
-2, The script was written for Debian and Ubuntu based distributions but your
+2. The script was written for Debian and Ubuntu based distributions but your
 experience may vary.
 
 3. The youtube-dl packages contained in the Debian and Ubuntu repositories are
@@ -78,11 +82,31 @@ exists()
   command -v "$1" >/dev/null 2>&1
 }
 
+is_focal()
+{
+  UBUNTU_CODE=$(grep 'UBUNTU_CODENAME' /etc/os-release | cut -d '=' -f2)
+  if [ "$UBUNTU_CODE" = "focal" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+## Execution ##
+
 # Display information about the script
 
 if [ "$1" == "-i" ] || [ "$1" == "--info" ]; then
   show_info
   exit
+fi
+
+# Check if distribution is based on Ubuntu 20.04 LTS
+
+if is_focal; then
+  echo "Youtube-dl cannot be installed under this distribution bcause it does not" >&2
+  echo "support python 2 by default and the python variable is not set." >&2
+  exit 1
 fi
 
 # Check sudo access and start sudo timer
@@ -91,7 +115,7 @@ sudo ls > /dev/null 2>&1
 
 # Install curl, if not installed.
 
-dpkg -l | grep -qw curl || sudo apt install -yyq curl
+dpkg -l | grep -qw curl || sudo apt install curl -yyq
 
 # Header
 
@@ -102,16 +126,14 @@ echo "Licensed under the GNU/General Public License version 2.0"
 
 # Delete older version from /usr/bin/ that was installed from the repositories
 
-if dpkg -l | grep -qw youtube-dl
-then
+if dpkg -l | grep -qw youtube-dl; then
   echo "Removing the older version installed from the distribution repositories..."
   sudo apt purge -yyq youtube-dl
 fi
 
 # Check if youtube-dl is installed from https://yt-dl.org
 
-if exists youtube-dl
-then
+if exists youtube-dl; then
   # Check version and update
   echo "youtube-dl version: $(youtube-dl --version)"
   echo $'\n'$"Updating youtube-dl to the newest version..."
@@ -120,8 +142,7 @@ else
   # Download youtube-dl to /usr/local/bin/
   echo "Installing youtube-dl from https://yt-dl.org..."
   if sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl \
-    -o /usr/local/bin/youtube-dl
-  then
+    -o /usr/local/bin/youtube-dl; then
     # Set permissions on the downloaded file
     sudo chmod a+rx /usr/local/bin/youtube-dl
     echo "youtube-dl version $(youtube-dl --version) installed to /usr/local/bin"
@@ -141,4 +162,3 @@ else
 fi
 
 exit
-
