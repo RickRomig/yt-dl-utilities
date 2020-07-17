@@ -2,11 +2,46 @@
 
 Richard B. Romig, Email: [rick.romig@gmail.com]()
 
+### 17 July 2020
+
+**yt-dl-install**
+
+- Added a function to determine if the distribution is based on Ubuntu 20.04 LTS. Since Ubuntu 20.04 has removed python 2 support, youtube-dl, as downloaded from yt-dl.org no longer works. If the distribution is based on Ubuntu 20.04, the script will display an error message and exit.
+
+- Removed references to youtube-dl version numbers.
+
+**yt-dl-remove**
+
+- Removed `exists` function. Script now checks if `/usr/local/bin/youtube-dl` exists using the `-f` test.
+
+- Updated the `rm_cfg` function to display results for the removal of each configuratin file.
+
+- Removed references to youtube-dl version numbers.
+
+### 16 July 2020
+
+**z-ytdlupdate**
+
+- Renamed the variables used to trim the log file.
+  
+  ```bash
+  # Old code
+  LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
+  (( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
+  LINE1=$(sed -n '1p' /var/log/ytdlup.log | grep 'Updated')
+  [ -n "$LINE1" ] &&  sed -i '1d' /var/log/ytdlup.log
+  # New code
+  LOG_LEN=$(wc -l "$LOG_FILE" | awk '{ print $1 }')
+  (( LOG_LEN > 30 )) && sed -i '1d' "$LOG_FILE"
+  LINE_ONE=$(sed -n '1p' "$LOG_FILE" | grep 'Updated')
+  [ -n "$LINE_ONE" ] && sed -i '1d' "$LOG_FILE"
+  ```
+
 ### 18 June 2020
 
 **z-ytldupdate**
 
-- Replaced the if statement with single line commands to remove earlier entries from the log file if the number of lines exceeded 30 lines, since only the first line was actually being removed from the file.  If, after running the update, the first line indicates that youtube-dl was upated, the next line will also be deleted as it ss part of that entry.
+- Replaced the if statement with single line commands to remove earlier entries from the log file if the number of lines exceeded 30 lines, since only the first line was actually being removed from the file.  If, after running the update, the first line indicates that youtube-dl was upated, the next line will also be deleted as it is part of that entry.
   
   ```bash
   # Old code
