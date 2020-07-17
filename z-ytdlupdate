@@ -2,38 +2,23 @@
 ###############################################################################
 # Script Name  : z-ytdlupdate
 # Description  : Updates youtube-dl automatically using anacron
-# Dependencies : anacron
+# Dependencies : anacron, sed
 # Arguments    : None
 # Author       : Richard B. Romig, 18 July 2019
 # Email        : rick.romig@gmail.com
 # Comments     : /etc/cron.daily /etc/cron.weekly /etc/cron.monthly
-# Last updated : 18 Jun 2020
+# Last updated : 16 Jul 2020
 ###############################################################################
-# GPL v2
-# Copyright (C) 2019, Richard B. Romig
-# Email: rick.romig@gmail.com
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program. If not, see <https://www.gnu.org/licenses/>.
-################################################################################
 
 set -e
 
-echo "$(date) $(youtube-dl -U)" >> /var/log/ytdlup.log
+LOG_FILE="/var/log/ytdlup.log"
 
-LINES=$(wc -l /var/log/ytdlup.log | awk '{ print $1 }')
-(( LINES > 30 )) && sed -i '1d' /var/log/ytdlup.log
-LINE1=$(sed -n '1p' /var/log/ytdlup.log | grep 'Updated')
-[ -n "$LINE1" ] &&  sed -i '1d' /var/log/ytdlup.log
+echo "$(date): $(youtube-dl -U)" >> "$LOG_FILE" 2>&1
+
+LOG_LEN=$(wc -l "$LOG_FILE" | awk '{ print $1 }')
+(( LOG_LEN > 30 )) && sed -i '1d' "$LOG_FILE"
+LINE_ONE=$(sed -n '1p' "$LOG_FILE" | grep 'Updated')
+[ -n "$LINE_ONE" ] && sed -i '1d' "$LOG_FILE"
 
 exit
