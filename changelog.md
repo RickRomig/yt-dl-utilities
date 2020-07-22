@@ -2,6 +2,29 @@
 
 Richard B. Romig, Email: [rick.romig@gmail.com]()
 
+### 22 July 2020
+
+**yt-dl-install**
+
+- If distribution is based on Ubuntu 20.04 (Focal Fossa), adds a sym link to point `/usr/bin/python` to `/usr/bin/python3`. The sym link allows youtube-dl to install, update, and run.
+  
+  ```bash
+  # Old code:
+  if is_focal; then
+    echo "Youtube-dl cannot be installed under this distribution bcause it does not" >&2
+    echo "support python 2 by default and the python variable is not set." >&2
+    exit 1
+  fi
+  # New code:
+  is_focal && sudo ln -s /usr/bin/python3 /usr/bin/python
+  ```
+
+- Checks to see if `ffmpeg` is installed. Installs if it is not. (Many of my scripts the use youtube-dl, use ffmpeg.)
+  
+  ```bash
+  dpkg -l | grep -qw ffmpeg || sudo apt install ffmpeg -yyq
+  ```
+
 ### 17 July 2020
 
 **yt-dl-install**
