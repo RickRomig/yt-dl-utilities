@@ -10,7 +10,7 @@ Utilities to install, remove, and update youtube-dl on Debian/Ubuntu
 4. Once youtube-dl is installed, you can update it from a terminal with the command `sudo youtube-dl -U` since the yt-dl.org version should be the only version installed. Alternatively, the script can be used to update it.
 5. During the yt-dl.org instillation of youtube-dl, the script copies a small script (if it exists in your ~/bin directory) to automatically update youtube-dl on a daily basis using anacron. The z-ytdlupdate script is set up to write the date and the output of the `youtube-dl -U` command to a log file in `/var/log`. The size is limited to the last 25 update attempts.
 6. Entering `yt-dl-install -i` or `yt-dl-install --info` in the terminal displays information about the script.
-7. The yt-dl.org version of youtube-dl currently does not work with distributions based on Ubuntu 20.04 LTS (focal fossa) because support for Python 2 has been removed.
+7. Support for Python 2 has been changd in distributions based on Ubuntu 20.04 LTS (Focal Fossa) . Python 3 is now the default. Youtube-dl is compatible with Python 3 and a symbolic link needs to be created. If the script detects a distribution based on Focal Fossa, it creates the necessary sym link.
 
 ### yt-dl-remove
 
@@ -46,7 +46,7 @@ Feel free to contact me with comments and suggestions for these Youtube-dl. Also
 * Email: [rick.romig@gmail.com]() or [rb_romig@twc.com]()
 
 Richard Romig
-17 July 2020
+22 July 2020
 
 ### DISCLAIMER
 
