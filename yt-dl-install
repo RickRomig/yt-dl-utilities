@@ -7,8 +7,8 @@
 # Author       : Richard B. Romig, 23 May 2019
 # Email        : rick.romig@gmail.com
 # Comments     : Removes package manager installed version from /usr/bin/
-# yt-dl.org version will not install properly in distributions based on
-# Ubuntu 20.04 because python2 is not included in the distribution.
+# Supports yt-dl.org version in distributions based on Ubuntu 20.04 by creating
+# symbolic link between /usr/bin/python and /usr/bin/python3.
 ################################################################################
 # GPL v2
 # Copyright (C) 2019, Richard B. Romig
@@ -29,8 +29,8 @@
 ################################################################################
 
 readonly SCRIPT=$(basename "$0")
-readonly VERSION="1.2.1"
-readonly UPDATED="17 Jul 2020"
+readonly VERSION="1.2.2"
+readonly UPDATED="22 Jul 2020"
 
 BINDIR=$HOME"/bin"
 
@@ -103,11 +103,7 @@ fi
 
 # Check if distribution is based on Ubuntu 20.04 LTS
 
-if is_focal; then
-  echo "Youtube-dl cannot be installed under this distribution bcause it does not" >&2
-  echo "support python 2 by default and the python variable is not set." >&2
-  exit 1
-fi
+is_focal && sudo ln -s /usr/bin/python3 /usr/bin/python
 
 # Check sudo access and start sudo timer
 
@@ -116,6 +112,7 @@ sudo ls > /dev/null 2>&1
 # Install curl, if not installed.
 
 dpkg -l | grep -qw curl || sudo apt install curl -yyq
+dpkg -l | grep -qw ffmpeg || sudo apt install ffmpeg -yyq
 
 # Header
 
