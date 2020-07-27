@@ -2,6 +2,21 @@
 
 Richard B. Romig, Email: [rick.romig@gmail.com]()
 
+#### 27 July 2020
+
+**z-ytdlupdate**
+
+- Changed the lines that removed the line containing "Updated" to get the first field of the first line which be either the day of the week or Updated.
+  
+  ```bash
+  # Old code:
+  LINE_ONE=$(sed -n '1p' "$LOG_FILE" | grep 'Updated')
+  [ -n "$LINE_ONE" ] && sed -i '1d' "$LOG_FILE"
+  # New code
+  LINE_ONE=$(sed -n '1p' "$LOG_FILE" | awk '{print $1}')
+  [ "$LINE_ONE" = "Updated" ] && sed -i '1d' "$LOG_FILE"
+  ```
+
 ### 22 July 2020
 
 **yt-dl-install**
@@ -19,7 +34,7 @@ Richard B. Romig, Email: [rick.romig@gmail.com]()
   is_focal && sudo ln -s /usr/bin/python3 /usr/bin/python
   ```
 
-- Checks to see if `ffmpeg` is installed. Installs if it is not. (Many of my scripts the use youtube-dl, use ffmpeg.)
+- Checks to see if `ffmpeg` is installed. Installs if it is not. (Many of my scripts that use youtube-dl, also use ffmpeg.)
   
   ```bash
   dpkg -l | grep -qw ffmpeg || sudo apt install ffmpeg -yyq
